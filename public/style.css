@@ -1,0 +1,20 @@
+
+body {
+    background-image: URL('images/background.jpg');
+    background-size: cover !important;
+    background-position: -300px -60px;
+}
+
+footer, .main{
+    background-color: rgba(0, 0, 0, 0.5);
+    height: fit-content;
+    width: fit-content;
+}
+
+#names-submit, #index-link, .weapon {
+    transition: all 1s ease;
+}
+
+#names-submit:hover, #index-link:hover, .weapon:hover {
+    transform: scale(1.1);
+}
