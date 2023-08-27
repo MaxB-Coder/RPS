@@ -2,6 +2,8 @@
 
 ## A two player game of Rock, Paper, Scissors, Spock, Lizard. The System allows players to input their name and the first player to win 5 rounds is declared the champion. Let the game begin!
 
+## Screenshots
+
 ## Basic Rules
 
 The full rules can be found [here](http://en.wikipedia.org/wiki/Rock-paper-scissors-lizard-Spock)
@@ -39,12 +41,12 @@ The full rules can be found [here](http://en.wikipedia.org/wiki/Rock-paper-sciss
 
 Visit the local host server that the game is launched on in your console!
 
-## Prerequisites
+### Prerequisites
 
 - Git
 - Node.js
 
-## Technologies
+### Technologies
 
 - Ejs
 - Bootstrap
