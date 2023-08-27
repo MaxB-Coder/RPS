@@ -39,12 +39,12 @@ The full rules can be found [here](http://en.wikipedia.org/wiki/Rock-paper-sciss
 
 Visit the local host server that the game is launched on in your console!
 
-### Prerequisites
+## Prerequisites
 
 - Git
 - Node.js
 
-### Technologies
+## Technologies
 
 - Ejs
 - Bootstrap
