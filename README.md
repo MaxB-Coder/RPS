@@ -4,22 +4,17 @@
 
 ## Basic Rules
 
+The full rules can be found [here](http://en.wikipedia.org/wiki/Rock-paper-scissors-lizard-Spock)
+
 - Rock beats Scissors and Lizard
 - Scissors beats Paper and Lizard
 - Paper beats Rock and Spock
 - Spock beats Scissors and Rock
 - Lizard beats Paper and Spock
 
-#### This chart is a visual representation of the rules.
+### This chart is a visual representation of the rules.
 
 ![Chart for the game](https://static.wikia.nocookie.net/bigbangtheory/images/7/7d/RPSLS.png/revision/latest?cb=20120822205915)
-The full rules can be found [here](http://en.wikipedia.org/wiki/Rock-paper-scissors-lizard-Spock)
-
-## Mock Ups
-
-![mock sign-up](Documentation/MockUps/sign-up.png)
-![mock login](Documentation/MockUps/login.png)
-![mock timeline](Documentation/MockUps/timeline.png)
 
 ## Installation and Setup
 
