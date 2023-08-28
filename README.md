@@ -4,6 +4,9 @@
 
 ## Screenshots
 
+![Home Screen](./Documentation/screenshots/homeScreen.png)
+![Weapon Select Screen](./Documentation/screenshots/weaponSelect.png)
+
 ## Basic Rules
 
 The full rules can be found [here](http://en.wikipedia.org/wiki/Rock-paper-scissors-lizard-Spock)
