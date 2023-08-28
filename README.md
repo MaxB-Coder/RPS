@@ -1,11 +1,11 @@
-![Rock, Paper, Scissors, Spock, Lizard](./Documentation/RPS.png)
+![Rock, Paper, Scissors, Spock, Lizard](./documentation/RPS.png)
 
 ## A two player game of Rock, Paper, Scissors, Spock, Lizard. The System allows players to input their name and the first player to win 5 rounds is declared the champion. Let the game begin!
 
 ## Screenshots
 
-![Home Screen](./Documentation/screenshots/homeScreen.png)
-![Weapon Select Screen](./Documentation/screenshots/weaponSelect.png)
+![Home Screen](./documentation/screenshots/homeScreen.png)
+![Weapon Select Screen](./documentation/screenshots/weaponSelect.png)
 
 ## Basic Rules
 
