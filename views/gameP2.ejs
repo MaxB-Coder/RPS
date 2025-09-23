@@ -14,37 +14,46 @@
 
 <body>
     <div class="main container d-flex flex-column justify-content-center">
-        
         <div class="container text-center d-flex justify-content-center">
-            <h1 class="heading col-12 text-white py-1">Current Player: <%= name %>
-            </h1>
+            <h1 class="heading col-12 text-white py-1">Current Player: <%= name %></h1>
         </div>
-
         <div class="row text-center d-flex justify-content-center">
-            <h2 class="heading col-3 text-white py-1">Your score is <%= score %>
-            </h2>
+            <h2 class="heading col-3 text-white py-1">Your score is <%= score %></h2>
         </div>
-        
         <div class="row text-center d-flex justify-content-center">
             <p class="heading col-2 text-white py-1">Select your weapon!</p>
         </div>
-        
+
         <form class="container" action="/turnP2" method="post">
-            <div class="weapons row d-flex justify-content-center">
-                <input type="hidden" name="state" value="<%= state %>">
-                <input id="rock-button" class="weapon col-2 mx-3" type="image" src="/images/rock.png" value="rock" name="move">
-                <input id="paper-button" class="weapon col-2 mx-3" type="image" src="/images/paper.png" value="paper" name="move">
-                <input id="scissors-button" class="weapon col-2 mx-3" type="image" src="/images/scissors.png" value="scissors" name="move">
-                <input id="spock-button" class="weapon col-2 mx-3" type="image" src="/images/spock.png" value="spock" name="move">
-                <input id="lizard-button" class="weapon col-2 mx-3" type="image" src="/images/lizard.png" value="lizard" name="move">
-            </div>
-        </form>
+    <input type="hidden" name="state" value="<%= state %>">
+    <input type="hidden" name="move" id="move-input">
+
+    <div class="weapons row d-flex justify-content-center">
+        <input type="image" class="weapon col-2 mx-3" src="/images/rock.png" data-move="rock">
+        <input type="image" class="weapon col-2 mx-3" src="/images/paper.png" data-move="paper">
+        <input type="image" class="weapon col-2 mx-3" src="/images/scissors.png" data-move="scissors">
+        <input type="image" class="weapon col-2 mx-3" src="/images/spock.png" data-move="spock">
+        <input type="image" class="weapon col-2 mx-3" src="/images/lizard.png" data-move="lizard">
+    </div>
+</form>
     </div>
 
-    <footer class="container bg-black fixed-bottom text-center text-white pt-2">
-        <p class="col-12">&copy; <script>document.write(/\d{4}/.exec(Date())[0])</script>
- Max Blaschek. All Rights Reserved.</p>
+    <footer class="container fixed-bottom text-center text-white pt-2">
+        <p class="col-12">&copy; <script>document.write(/\d{4}/.exec(Date())[0])</script> Max Blaschek. All Rights Reserved.</p>
     </footer>
+
+    <script>
+    const form = document.querySelector('form');
+    const hiddenMove = document.getElementById('move-input');
+
+    form.querySelectorAll('input[type="image"]').forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            hiddenMove.value = this.dataset.move;
+            form.submit();
+        });
+    });
+</script>
 </body>
 
 </html>

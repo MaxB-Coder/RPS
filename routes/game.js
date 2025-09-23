@@ -17,13 +17,14 @@ router.get("/", (req, res) => {
   if (!stateParam) return res.status(400).send("Missing game state");
 
   const battle = Battle.deserialize(decodeURIComponent(stateParam));
-  const player = battle.currentPlayer();
+  const current = battle.currentPlayer();
 
-  const state = encodeURIComponent(battle.serialize());
-  res.render("gameP1", {
-    name: player.name,
-    score: player.score,
-    state
+  const template = battle.current === 0 ? "gameP1" : "gameP2";
+
+  res.render(template, {
+    name: current.name,
+    score: current.score,
+    state: encodeURIComponent(battle.serialize())
   });
 });
 

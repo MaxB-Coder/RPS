@@ -12,18 +12,32 @@ router.post("/", (req, res) => {
   const move = req.body.move;
   if (!move) return res.status(400).send("Missing move");
 
-  battle.play(move);
-
-  const winner = battle.checkWin();
+  const result = battle.play(move); // store Player 1 move
   const state = encodeURIComponent(battle.serialize());
 
+  // Check for winner
+  const winner = battle.checkWin();
   if (winner) {
-    res.render("winner", { winnerName: winner.name, winnerScore: winner.score, state });
-  } else {
-    battle.nextPlayer();
-    const updatedState = encodeURIComponent(battle.serialize());
-    res.redirect(`/game?state=${updatedState}`);
+    return res.render("winner", {
+      winner,
+      player1: battle.players[0],
+      player2: battle.players[1],
+      state
+    });
   }
+
+  if (result) {
+    // Both players have moved, show turn result
+    return res.render("turnResult", {
+      result,
+      player1: battle.players[0],
+      player2: battle.players[1],
+      state
+    });
+  }
+
+  // Only Player 1 has moved, redirect to Player 2's turn
+  res.redirect(`/game?state=${state}`);
 });
 
 export default router;
