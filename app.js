@@ -1,38 +1,31 @@
 import express from "express";
 import path from "path";
-import { fileURLToPath } from "url";
-
-// __dirname replacement in ESM
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import bodyParser from "body-parser";
+import gameRouter from "./routes/game.js";
+import turnP1Router from "./routes/turnP1.js";
+import turnP2Router from "./routes/turnP2.js";
 
 const app = express();
 
-// Middleware & config
+app.use(express.static(path.join(path.resolve(), "public")));
+
+// Middleware
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Set view engine
 app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
-app.use(express.static(path.join(__dirname, "public")));
+app.set("views", path.join(path.resolve(), "views"));
 
-// TODO: import your routes here, e.g.
-// import gameRoutes from "./routes/game.js";
-import indexRouter from './routes/index.js';
-import gameRouter from './routes/game.js';
-import turnP1Router from './routes/turnP1.js';
-import turnP2Router from './routes/turnP2.js';
+// Routes
+app.use("/game", gameRouter);
+app.use("/turnP1", turnP1Router);
+app.use("/turnP2", turnP2Router);
 
-// Use routes
-app.use('/', indexRouter);
-app.use('/game', gameRouter);
-app.use('/turnP1', turnP1Router);
-app.use('/turnP2', turnP2Router);
+app.get("/", (req, res) => res.render("index"));
 
-// Export app for Vercel
+// Start server
+const port = process.env.PORT || 3010;
+app.listen(port, () => console.log(`Listening on port ${port}`));
+
 export default app;
-
-// Only listen locally (Vercel handles serving the exported app)
-if (process.env.NODE_ENV !== "production") {
-  const port = process.env.PORT || 3010;
-  app.listen(port, () => {
-    console.log(`Listening on port ${port}`);
-  });
-}

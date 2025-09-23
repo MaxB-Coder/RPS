@@ -1,24 +1,30 @@
-import { Router } from 'express';
+import { Router } from "express";
+import Battle from "../src/battle.js";
+
 const router = Router();
-import Battle from '../src/battle.js';
 
-router.post('/', (req, res) => {
-    const battle = new Battle();
-    const names = [req.body.player1, req.body.player2];
-  
-    battle.setup(names);
-    req.app.locals.battle = battle;
+router.post("/", (req, res) => {
+  const battle = new Battle();
+  const names = [req.body.player1, req.body.player2];
+  battle.setup(names);
 
-    res.redirect('/game');
-})
+  const state = encodeURIComponent(battle.serialize());
+  res.redirect(`/game?state=${state}`);
+});
 
-router.get('/', (req, res) => {
-  const player = req.app.locals.battle.currentPlayer();
+router.get("/", (req, res) => {
+  const stateParam = req.query.state;
+  if (!stateParam) return res.status(400).send("Missing game state");
 
-  res.render('gameP1', {
+  const battle = Battle.deserialize(decodeURIComponent(stateParam));
+  const player = battle.currentPlayer();
+
+  const state = encodeURIComponent(battle.serialize());
+  res.render("gameP1", {
     name: player.name,
-    score: player.score
+    score: player.score,
+    state
   });
-})
+});
 
 export default router;

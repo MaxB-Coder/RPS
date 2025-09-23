@@ -1,65 +1,29 @@
-import { Router } from 'express';
-import Weapon from '../src/weapon.js';
+import { Router } from "express";
+import Battle from "../src/battle.js";
+
 const router = Router();
 
-router.post('/', (req, res) => {
-    const weaponP1 = req.app.locals.weaponP1;
-    const weaponP2 = req.body;
-    req.app.locals.weaponP2 = weaponP2;
+router.post("/", (req, res) => {
+  const stateParam = req.body.state;
+  if (!stateParam) return res.status(400).send("Missing game state");
 
-    const P1Weapon = Weapon.weaponProcessor(weaponP1);
-    const P2Weapon = Weapon.weaponProcessor(weaponP2);
-    const battle = req.app.locals.battle;
-    const result = battle.turn(P1Weapon, P2Weapon);
+  const battle = Battle.deserialize(decodeURIComponent(stateParam));
 
-    const currentPlayer = battle.currentPlayer();
-    const otherPlayer = battle.otherPlayer();
-    battle.switch();
+  const move = req.body.move;
+  if (!move) return res.status(400).send("Missing move");
 
-    if (currentPlayer.score >= 5) {
-        res.render('p2Win', {
-        currentPlayer: currentPlayer,
-        otherPlayer: otherPlayer,
-        weaponP1: P1Weapon,
-        weaponP2: P2Weapon
-        });
-    }
+  battle.play(move);
 
-    if (otherPlayer.score >= 5) {
-        res.render('p1Win', {
-        currentPlayer: currentPlayer,
-        otherPlayer: otherPlayer,
-        weaponP1: P1Weapon,
-        weaponP2: P2Weapon
-        });
-    }
+  const winner = battle.checkWin();
+  const state = encodeURIComponent(battle.serialize());
 
-    if (result === "P1 Win") {
-        res.render('turnP1Win', {
-        currentPlayer: currentPlayer,
-        otherPlayer: otherPlayer,
-        weaponP1: P1Weapon,
-        weaponP2: P2Weapon
-        });
-    }
-
-    if (result === "P2 Win") {
-        res.render('turnP2Win', {
-        currentPlayer: currentPlayer,
-        otherPlayer: otherPlayer,
-        weaponP1: P1Weapon,
-        weaponP2: P2Weapon
-        });
-    } 
-
-    if (result === "Draw") {
-        res.render('draw', {
-        currentPlayer: currentPlayer,
-        otherPlayer: otherPlayer,
-        weaponP1: P1Weapon,
-        weaponP2: P2Weapon
-        });
-    } 
-})
+  if (winner) {
+    res.render("winner", { winnerName: winner.name, winnerScore: winner.score, state });
+  } else {
+    battle.nextPlayer();
+    const updatedState = encodeURIComponent(battle.serialize());
+    res.redirect(`/game?state=${updatedState}`);
+  }
+});
 
 export default router;

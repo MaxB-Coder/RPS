@@ -8,7 +8,7 @@
     "node": ">=22.0.0"
   },
   "scripts": {
-    "start": "nodemon app",
+    "dev": "nodemon app",
     "test": "mocha --timeout=10000 --exit",
     "c8-coverage": "c8 npm test",
     "build": "echo \"No build needed\""

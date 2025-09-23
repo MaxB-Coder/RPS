@@ -31,21 +31,19 @@
         
         <form class="container" action="/turnP2" method="post">
             <div class="weapons row d-flex justify-content-center">
-                <input id="rock-button" class="weapon col-2 mx-3" type="image" src="/images/rock.png" value="rock" name="rock">
-                <input id="paper-button" class="weapon col-2 mx-3" type="image" src="/images/paper.png" value="paper"
-                    name="paper">
-                <input id="scissors-button" class="weapon col-2 mx-3" type="image" src="/images/scissors.png" value="scissors"
-                    name="scissors">
-                <input id="spock-button" class="weapon col-2 mx-3" type="image" src="/images/spock.png" value="spock"
-                    name="spock">
-                <input id="lizard-button" class="weapon col-2 mx-3" type="image" src="/images/lizard.png" value="lizard"
-                    name="lizard">
+                <input type="hidden" name="state" value="<%= state %>">
+                <input id="rock-button" class="weapon col-2 mx-3" type="image" src="/images/rock.png" value="rock" name="move">
+                <input id="paper-button" class="weapon col-2 mx-3" type="image" src="/images/paper.png" value="paper" name="move">
+                <input id="scissors-button" class="weapon col-2 mx-3" type="image" src="/images/scissors.png" value="scissors" name="move">
+                <input id="spock-button" class="weapon col-2 mx-3" type="image" src="/images/spock.png" value="spock" name="move">
+                <input id="lizard-button" class="weapon col-2 mx-3" type="image" src="/images/lizard.png" value="lizard" name="move">
             </div>
         </form>
     </div>
 
     <footer class="container bg-black fixed-bottom text-center text-white pt-2">
-        <p class="col-12">&copy; 2023 Max Blaschek. All Rights Reserved.</p>
+        <p class="col-12">&copy; <script>document.write(/\d{4}/.exec(Date())[0])</script>
+ Max Blaschek. All Rights Reserved.</p>
     </footer>
 </body>
 
