@@ -1,20 +1,131 @@
-
+/* Base styles */
+html,
 body {
-    background-image: URL('images/background.jpg');
-    background-size: cover !important;
-    background-position: -300px -60px;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url('images/background.jpg') no-repeat center center fixed;
+  background-size: cover;
 }
 
-footer, .main{
-    background-color: rgba(0, 0, 0, 0.5);
-    height: fit-content;
-    width: fit-content;
+.main {
+  width: 80vw; /* 80% of viewport width */
+  min-height: 80vh; /* 80% of viewport height */
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 40px;
+  border-radius: 12px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-#names-submit, #index-link, .weapon {
-    transition: all 1s ease;
+/* Header image */
+header img {
+  width: clamp(700px, 35vw, 600px);
+  height: auto;
+  margin-bottom: 10px;
 }
 
-#names-submit:hover, #index-link:hover, .weapon:hover {
-    transform: scale(1.1);
+/* Headings and text */
+.heading,
+.who {
+  color: white;
+  margin: 8px 0;
+  font-size: 1.2rem;
+}
+
+/* Text inputs */
+input[type='text'] {
+  width: clamp(180px, 20vw, 300px);
+  padding: 14px;
+  font-size: clamp(0.5rem, 1.1rem, 1rem);
+  margin: 8px;
+  border-radius: 6px;
+  text-align: center;
+}
+
+/* Submit button */
+input[type='submit'] {
+  padding: 14px 32px;
+  font-size: clamp(1rem, 1.1vw, 1.1rem);
+  margin-top: 20px;
+  cursor: pointer;
+  border-radius: 6px;
+  border: none;
+  transition: transform 0.3s;
+}
+
+input[type='submit']:hover {
+  transform: scale(1.1);
+}
+
+/* Weapons container */
+.weapons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* Weapon images */
+.weapon {
+  width: clamp(100px, 10vw, 150px);
+  height: auto;
+  margin: 12px;
+  transition: transform 0.3s ease;
+}
+
+.weapon:hover {
+  transform: scale(1.1);
+}
+
+/* Footer */
+footer {
+  width: 100%;
+  text-align: center;
+  color: white;
+  padding-top: 10px;
+}
+
+/* Medium screens (tablets) */
+@media (max-width: 992px) {
+  .main {
+    width: 90vw;
+    height: 90vh;
+    padding: 30px;
+  }
+  input[type='text'] {
+    width: 25%;
+  }
+  header img {
+    width: 90%;
+  }
+}
+
+/* Small screens (mobile) */
+@media (max-width: 576px) {
+  .main {
+    width: 95vw;
+    height: 95vh;
+    padding: 20px;
+  }
+  input[type='text'] {
+    width: 90%;
+  }
+  .who {
+    font-size: 1.2rem;
+  }
+  header img {
+    width: 100%;
+    height: auto;
+  }
+  .weapon {
+    width: 70px;
+    margin: 6px;
+  }
 }
