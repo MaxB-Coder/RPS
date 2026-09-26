@@ -7,7 +7,8 @@ router.post("/", (req, res) => {
   const stateParam = req.body.state;
   if (!stateParam) return res.status(400).send("Missing game state");
 
-  const battle = Battle.deserialize(decodeURIComponent(stateParam));
+  const battle = Battle.fromRequest(stateParam);
+  if (!battle) return res.status(400).send("Invalid game state");
 
   const move = req.body.move;
   if (!move) return res.status(400).send("Missing move");
