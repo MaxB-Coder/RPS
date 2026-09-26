@@ -17,20 +17,24 @@ describe('Battle class tests:', () => {
     });
 
     it('should add the correct play names to the players array', () => {
-        expect(JSON.stringify(battle.players)).to.equal('[{"name":"Player1","score":0},{"name":"Player2","score":0}]');
+        expect(battle.players.map(({ name, score }) => ({ name, score }))).to.deep.equal([
+            { name: 'Player1', score: 0 },
+            { name: 'Player2', score: 0 },
+        ]);
     })
     
     it('should be able to switch players', () => {
-        battle.switch();
-        expect(JSON.stringify(battle.players)).to.equal('[{"name":"Player2","score":0},{"name":"Player1","score":0}]');
+        battle.nextPlayer();
+        expect(battle.currentPlayer().name).to.equal('Player2');
+        expect(battle.otherPlayer().name).to.equal('Player1');
     })
 
     it('should check that currentPlayer() returns the first player in the players array.', () => { 
-        expect(JSON.stringify(battle.currentPlayer())).to.equal('{"name":"Player1","score":0}');
+        expect(battle.currentPlayer().name).to.equal('Player1');
     })
 
     it('should check that otherPlayer() returns the second player in the players array.', () => { 
-        expect(JSON.stringify(battle.otherPlayer())).to.equal('{"name":"Player2","score":0}');
+        expect(battle.otherPlayer().name).to.equal('Player2');
     })
 
     it('should check that a draw is returned when both weapons are the same.', () => { 
@@ -137,4 +141,16 @@ describe('Battle class tests:', () => {
         const expected = battle.turn("scissors", "spock")
         expect(expected).to.equal("P2 Win");
     })
- })
+ 
+    it('should resolve a turn once both players have chosen', () => {
+        expect(battle.play('rock')).to.equal(null);
+        expect(battle.play('scissors')).to.equal('P1 Win');
+        expect(battle.players[0].score).to.equal(1);
+    });
+
+    it('should still resolve turns when both players have the same name', () => {
+        battle.setup(['Max', 'Max']);
+        expect(battle.play('rock')).to.equal(null);
+        expect(battle.play('paper')).to.equal('P2 Win');
+    });
+})

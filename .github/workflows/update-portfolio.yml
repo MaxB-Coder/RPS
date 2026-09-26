@@ -1,0 +1,27 @@
+# Copy into a project repo as .github/workflows/update-portfolio.yml.
+# On every push to main, it asks maxblaschek.com to redeploy, which rebuilds
+# this project's live demo from the new commit (usually live in ~3 minutes).
+#
+# Needs the repo secret PORTFOLIO_DISPATCH_TOKEN: a fine-grained token with
+# access to MaxB-Coder/personal-website only, and Actions: Read and write.
+name: Update portfolio demo
+
+on:
+  push:
+    branches: [main]
+
+permissions: {}
+
+jobs:
+  redeploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ask maxblaschek.com to rebuild this demo
+        env:
+          GH_TOKEN: ${{ secrets.PORTFOLIO_DISPATCH_TOKEN }}
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "::notice::PORTFOLIO_DISPATCH_TOKEN isn't set, so the portfolio will pick this up in its daily rebuild"
+            exit 0
+          fi
+          gh workflow run deploy.yml --repo MaxB-Coder/personal-website -f reason="${{ github.repository }}@${{ github.sha }}"

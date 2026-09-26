@@ -34,10 +34,8 @@ class Battle {
 
   // Store a move; if both players have played, calculate turn result
   play(move) {
-  const currentPlayer = this.currentPlayer();
-
-  // Store the move for this player
-  this.moves[currentPlayer.name] = move;
+  // Store the move by seat, so players with the same name don't overwrite each other
+  this.moves[this.current] = move;
 
   // Only calculate result if both players have chosen
   if(Object.keys(this.moves).length < 2) {
@@ -47,8 +45,8 @@ class Battle {
 
   // Both players have chosen → calculate winner
   const [p1, p2] = this.players;
-  const P1Weapon = this.moves[p1.name];
-  const P2Weapon = this.moves[p2.name];
+  const P1Weapon = this.moves[0];
+  const P2Weapon = this.moves[1];
 
   // Store weapons for EJS
   p1.weapon = P1Weapon;
@@ -108,6 +106,17 @@ class Battle {
       turnNumber: this.turnNumber,
       moves: this.moves
     });
+  }
+
+  // Deserialize state that came from a request; null if it's missing or malformed
+  static fromRequest(encoded) {
+    try {
+      const obj = JSON.parse(decodeURIComponent(encoded));
+      if (!Array.isArray(obj?.players) || obj.players.length !== 2) return null;
+      return Battle.deserialize(obj);
+    } catch {
+      return null;
+    }
   }
 
   // Deserialize JSON into a Battle instance
