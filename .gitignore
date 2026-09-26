@@ -1,1 +1,3 @@
 node_modules
+# Static demo build (npm run build:demo)
+dist-demo/
