@@ -18,7 +18,25 @@ describe('Routes tests:', () => {
         const res = await testServer.get('/game').query({ state });
 
         expect(res).to.have.status(200);
-        expect(res.text).to.contain('Current Player: Alice');
+        expect(res.text).to.contain('Alice, pick your weapon');
+        expect(res.text).to.match(/<button[^>]*name="move" value="rock"/);
+    });
+
+    it('plays a whole turn without any JavaScript: both picks, then the result', async () => {
+        const state = await newGame();
+        const afterP1 = await testServer.post('/turnP1').type('form').send({ state, move: 'rock' }).redirects(0);
+        const next = new URL(afterP1.headers.location, 'http://localhost').searchParams.get('state');
+        const res = await testServer.post('/turnP2').type('form').send({ state: next, move: 'scissors' });
+
+        expect(res).to.have.status(200);
+        // EJS escapes the apostrophes
+        expect(res.text.replace(/&#39;/g, "'")).to.contain("Alice's rock beats Bob's scissors");
+    });
+
+    it('serves only its own stylesheet, with no CDN scripts', async () => {
+        const res = await testServer.get('/');
+        expect(res.text).to.contain('href="/style.css"');
+        expect(res.text).to.not.match(/cdn\.jsdelivr|code\.jquery/);
     });
 
     it('passes the turn to player 2 after player 1 chooses', async () => {
