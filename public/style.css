@@ -1,136 +1,410 @@
-/* Base styles */
-html,
+/* Rock, Paper, Scissors, Spock, Lizard: one stylesheet for the Express app and
+   the static demo (demo/), which render the same screens (views/screens). */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  /* The background drawing's own grey; the drawing is the corner mascot */
+  background: #71757e;
+}
+
 body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  background: url('images/background.jpg') no-repeat center center fixed;
-  background-size: cover;
+  justify-content: center;
+  min-height: 100vh;
+  min-height: 100svh;
+  margin: 0;
+  padding: 12px 0;
+  background: #71757e;
+  color: #ffffff;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+p {
+  margin: 0;
+}
+
+img {
+  max-width: 100%;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button,
+input[type='submit'] {
+  cursor: pointer;
+}
+
+.text-center {
+  text-align: center;
+}
+
+:root {
+  --accent: #00a0b2; /* the banner's teal */
+  --accent-hover: #00b7cb;
+  --accent-glow: rgba(0, 160, 178, 0.3);
+  --panel: rgba(22, 24, 30, 0.9);
+  --tile: #2a2e37;
+  --tile-hover: #323744;
+  --soft: rgba(255, 255, 255, 0.68);
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .main {
-  width: 80vw; /* 80% of viewport width */
-  min-height: 80vh; /* 80% of viewport height */
-  background-color: rgba(0, 0, 0, 0.5);
-  padding: 40px;
-  border-radius: 12px;
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-}
-
-/* Header image */
-header img {
-  width: clamp(700px, 35vw, 600px);
+  justify-content: center;
+  /* Above the mascot, so the panel's shadow falls over it evenly */
+  position: relative;
+  z-index: 1;
+  gap: 20px;
+  width: min(760px, calc(100vw - 24px));
   height: auto;
-  margin-bottom: 10px;
-}
-
-/* Headings and text */
-.heading,
-.who {
-  color: white;
-  margin: 8px 0;
-  font-size: 1.2rem;
-}
-
-/* Text inputs */
-input[type='text'] {
-  width: clamp(180px, 20vw, 300px);
-  padding: 14px;
-  font-size: clamp(0.5rem, 1.1rem, 1rem);
-  margin: 8px;
-  border-radius: 6px;
+  min-height: min(640px, calc(100svh - 72px));
+  padding: clamp(24px, 5vw, 48px);
+  background: var(--panel);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+  color: #ffffff;
   text-align: center;
 }
 
-/* Submit button */
-input[type='submit'] {
-  padding: 14px 32px;
-  font-size: clamp(1rem, 1.1vw, 1.1rem);
+.main form {
+  width: 100%;
+}
+
+.mascot {
+  display: none;
+  position: fixed;
+  right: 24px;
+  bottom: 16px;
+  z-index: 0;
+  width: clamp(200px, 18vw, 320px);
+  pointer-events: none;
+}
+
+/* Only where it fits beside the panel */
+@media (min-width: 1280px) {
+  .mascot {
+    display: block;
+  }
+}
+
+/* Start */
+.banner img {
+  width: 100%;
+  max-width: 560px;
+  margin: 0;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.who {
+  margin: 8px 0 0;
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+
+.names {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+input.name {
+  flex: 1;
+  width: auto;
+  min-width: 0;
+  max-width: 220px;
+  margin: 0;
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 12px;
+  background: var(--tile);
+  color: #ffffff;
+  font-size: 1rem;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+input.name::placeholder {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+input.name:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.versus {
+  color: var(--soft);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+input.cta {
   margin-top: 20px;
-  cursor: pointer;
-  border-radius: 6px;
-  border: none;
-  transition: transform 0.3s;
+  padding: 14px 36px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--accent);
+  box-shadow: 0 8px 24px var(--accent-glow);
+  color: #ffffff;
+  font-size: 1.05rem;
+  font-weight: 700;
+  transition:
+    transform 0.2s var(--ease),
+    background-color 0.2s ease;
 }
 
-input[type='submit']:hover {
-  transform: scale(1.1);
+input.cta:hover {
+  background: var(--accent-hover);
+  transform: translateY(-2px);
 }
 
-/* Weapons container */
-.weapons {
+input.cta:active {
+  transform: scale(0.97);
+}
+
+input.cta:focus-visible,
+.weapon:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+.hint {
+  margin: 0;
+  color: var(--soft);
+  font-size: 0.85rem;
+}
+
+/* Score, with the player choosing highlighted */
+.scoreboard {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin-top: 20px;
+  gap: 8px;
 }
 
-/* Weapon images */
+.score {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 8px 7px 16px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: var(--tile);
+  font-weight: 600;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.score.current {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.score-name {
+  max-width: 9rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.score-points {
+  min-width: 28px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  font-variant-numeric: tabular-nums;
+}
+
+.heading {
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(1.25rem, 4vw, 1.6rem);
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+/* Weapons: labelled tiles, five across (three then two on phones) */
+.weapons {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  width: 100%;
+  max-width: 640px;
+  margin: 0;
+}
+
 .weapon {
-  width: clamp(100px, 10vw, 150px);
-  height: auto;
-  margin: 12px;
-  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: auto;
+  margin: 0;
+  padding: 14px 8px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  background: var(--tile);
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    transform 0.2s var(--ease),
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.weapon img {
+  width: 100%;
+  max-width: 72px;
+  aspect-ratio: 1;
+  object-fit: contain;
 }
 
 .weapon:hover {
-  transform: scale(1.1);
+  border-color: var(--accent);
+  background: var(--tile-hover);
+  transform: translateY(-3px);
 }
 
-/* Footer */
+.weapon:active {
+  transform: scale(0.96);
+}
+
+/* The turn's two weapons, face to face */
+.face-off {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+.side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-width: 118px;
+  padding: 16px;
+  border: 2px solid transparent;
+  border-radius: 20px;
+  background: var(--tile);
+  font-weight: 600;
+  animation: pop 0.5s var(--ease) both;
+}
+
+.side img {
+  width: clamp(64px, 18vw, 96px);
+  aspect-ratio: 1;
+  object-fit: contain;
+}
+
+.side.won {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-glow);
+}
+
+.side.lost {
+  opacity: 0.45;
+  filter: grayscale(0.6);
+}
+
+/* The winner */
+.trophy {
+  margin: 0;
+  font-size: 3.5rem;
+  line-height: 1;
+  animation: pop 0.6s var(--ease) both;
+}
+
+.winbox {
+  max-width: 440px;
+  padding: 16px 20px;
+  border-radius: 16px;
+  background: var(--tile);
+}
+
+.winbox p {
+  margin: 4px 0;
+}
+
+.consolation {
+  color: var(--soft);
+  font-style: italic;
+}
+
 footer {
-  width: 100%;
-  text-align: center;
-  color: white;
-  padding-top: 10px;
+  padding-top: 12px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.8rem;
 }
 
-/* Medium screens (tablets) */
-@media (max-width: 992px) {
-  .main {
-    width: 90vw;
-    height: 90vh;
-    padding: 30px;
-  }
-  input[type='text'] {
-    width: 25%;
-  }
-  header img {
-    width: 90%;
+footer p {
+  margin: 0;
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
   }
 }
 
-/* Small screens (mobile) */
 @media (max-width: 576px) {
   .main {
-    width: 95vw;
-    height: 95vh;
-    padding: 20px;
-  }
-  input[type='text'] {
-    width: 90%;
-  }
-  .who {
-    font-size: 1.2rem;
-  }
-  header img {
-    width: 100%;
+    width: calc(100vw - 16px);
     height: auto;
   }
+
+  .weapons {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
   .weapon {
-    width: 70px;
-    margin: 6px;
+    grid-column: span 2;
+  }
+
+  .weapon:nth-of-type(4) {
+    grid-column: 2 / span 2;
+  }
+
+  .side {
+    min-width: 0;
+    flex: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
   }
 }
 
 /* Headings only take focus from the game moving screens, never from the keyboard, so no ring */
-[tabindex="-1"]:focus {
+[tabindex='-1']:focus {
   outline: none;
 }

@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import Battle from '../src/battle.js';
+import { renderScreen } from './render.js';
 
 const router = Router();
 
@@ -19,22 +20,12 @@ router.post('/', (req, res) => {
   // Check for winner
   const winner = battle.checkWin();
   if (winner) {
-    return res.render('winner', {
-      winner,
-      player1: battle.players[0],
-      player2: battle.players[1],
-      state,
-    });
+    return renderScreen(res, { screen: 'winner', battle, result }, state);
   }
 
   if (result) {
     // Both players have moved, show turn result
-    return res.render('turnResult', {
-      result,
-      player1: battle.players[0],
-      player2: battle.players[1],
-      state,
-    });
+    return renderScreen(res, { screen: 'result', battle, result }, state);
   }
 
   // Only Player 1 has moved, redirect to Player 2's turn

@@ -1,0 +1,10 @@
+<%- include('scoreboard') %>
+<h1 class="heading" tabindex="-1"><%= player %>, pick your weapon</h1>
+<form class="weapons" action="<%= action %>" method="post" data-step="choose">
+  <input type="hidden" name="state" value="<%= state %>" />
+  <% weapons.forEach(({ id, label }) => { %>
+  <button class="weapon" type="submit" name="move" value="<%= id %>">
+    <img src="images/<%= id %>.png" alt="" /><span><%= label %></span>
+  </button>
+  <% }) %>
+</form>

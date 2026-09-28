@@ -1,0 +1,10 @@
+<p class="trophy" aria-hidden="true">🏆</p>
+<h1 class="heading" tabindex="-1"><%= winner.name %> is the winner!</h1>
+<div class="winbox">
+  <p>Final score: <%= winner.score %> to <%= loser.score %></p>
+  <p>Final battle: <%= winner.name %>'s <%= winner.weapon %> beat <%= loser.name %>'s <%= loser.weapon %></p>
+  <p class="consolation">Sorry <%= loser.name %>, you'll get 'em next time...</p>
+</div>
+<form class="text-center" action="." method="get" data-step="again">
+  <input class="cta" type="submit" value="Play again?" />
+</form>

@@ -1,0 +1,14 @@
+<%- include('scoreboard') %>
+<div class="face-off" aria-hidden="true">
+  <% turn.sides.forEach((side, index) => { %>
+  <% if (index === 1) { %><span class="versus">vs</span><% } %>
+  <div class="side<%= turn.winner === null ? '' : turn.winner === index ? ' won' : ' lost' %>">
+    <img src="images/<%= side.weapon %>.png" alt="" /><span><%= side.name %></span>
+  </div>
+  <% }) %>
+</div>
+<h1 class="heading" tabindex="-1"><%= heading %></h1>
+<form class="text-center" action="game" method="get" data-step="next">
+  <input type="hidden" name="state" value="<%= state %>" />
+  <input class="cta" type="submit" value="Another one" />
+</form>

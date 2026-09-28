@@ -1,0 +1,7 @@
+<div class="scoreboard" role="group" aria-label="Score">
+  <% scores.forEach(({ name, score, current }) => { %>
+  <div class="score<%= current ? ' current' : '' %>">
+    <span class="score-name"><%= name %></span><span class="score-points"><%= score %></span>
+  </div>
+  <% }) %>
+</div>

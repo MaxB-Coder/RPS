@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import gameRouter from "./routes/game.js";
 import turnP1Router from "./routes/turnP1.js";
 import turnP2Router from "./routes/turnP2.js";
+import { renderScreen } from "./routes/render.js";
 
 const app = express();
 
@@ -22,7 +23,7 @@ app.use("/game", gameRouter);
 app.use("/turnP1", turnP1Router);
 app.use("/turnP2", turnP2Router);
 
-app.get("/", (req, res) => res.render("index"));
+app.get("/", (req, res) => renderScreen(res, null));
 
 // Start server
 const port = process.env.PORT || 3010;

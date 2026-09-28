@@ -1,5 +1,6 @@
 import { Router } from "express";
 import Battle from "../src/battle.js";
+import { renderScreen } from "./render.js";
 
 const router = Router();
 
@@ -18,15 +19,7 @@ router.get("/", (req, res) => {
 
   const battle = Battle.fromRequest(stateParam);
   if (!battle) return res.status(400).send("Invalid game state");
-  const current = battle.currentPlayer();
-
-  const template = battle.current === 0 ? "gameP1" : "gameP2";
-
-  res.render(template, {
-    name: current.name,
-    score: current.score,
-    state: encodeURIComponent(battle.serialize())
-  });
+  renderScreen(res, { screen: "choose", battle, result: null }, encodeURIComponent(battle.serialize()));
 });
 
 export default router;
