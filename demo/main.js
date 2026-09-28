@@ -1,10 +1,13 @@
-import ejs from 'ejs/ejs.js';
 import { screenData } from '../src/screens.js';
 import { choose, nextTurn, startGame } from './flow.js';
+import { screenRenderer } from './screens-runtime.js';
 
-// The Express app's own screen templates, so the demo always matches it
-const TEMPLATES = import.meta.glob('../views/screens/*.ejs', { query: '?raw', import: 'default', eager: true });
-const template = (name) => TEMPLATES[`../views/screens/${name}.ejs`];
+// The Express app's own screen templates, compiled to JavaScript at build time
+// (demo/precompile.js), so the demo always matches it and needs no eval
+const COMPILED = import.meta.glob('../views/screens/*.ejs', { import: 'default', eager: true });
+const screens = screenRenderer(
+    Object.fromEntries(Object.entries(COMPILED).map(([path, render]) => [path.match(/([\w-]+)\.ejs$/)[1], render])),
+);
 
 const app = document.getElementById('app');
 document.getElementById('copyright').textContent = `© ${new Date().getFullYear()} Max Blaschek. All Rights Reserved.`;
@@ -15,9 +18,8 @@ let firstScreen = true;
 function show(next) {
     game = next;
     // <%= %> escapes, so player names are never parsed as HTML
-    app.innerHTML = ejs.render(template(screenData(game).screen), { ...screenData(game), state: '' }, {
-        includer: (name) => ({ template: template(name) }),
-    });
+    const data = { ...screenData(game), state: '' };
+    app.innerHTML = screens.render(data.screen, data);
     // Move focus to the new screen's heading so keyboard and screen reader users
     // follow along; the first screen is simply where the page starts
     if (firstScreen) firstScreen = false;
