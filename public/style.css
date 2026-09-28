@@ -129,3 +129,8 @@ footer {
     margin: 6px;
   }
 }
+
+/* Headings only take focus from the game moving screens, never from the keyboard, so no ring */
+[tabindex="-1"]:focus {
+  outline: none;
+}
