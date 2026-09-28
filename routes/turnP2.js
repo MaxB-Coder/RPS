@@ -29,7 +29,7 @@ router.post("/", (req, res) => {
   }
 
   // Only Player 2 has moved? Normally shouldn't happen
-  res.redirect(`/game?state=${state}`);
+  renderScreen(res, { screen: 'choose', battle, result: null }, state);
 });
 
 export default router;

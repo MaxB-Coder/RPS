@@ -3,6 +3,9 @@
 // always look and read the same.
 export const WEAPONS = ['rock', 'paper', 'scissors', 'spock', 'lizard'];
 
+/** The year the game was made, for the footer. */
+export const MADE_IN = 2023;
+
 const capitalise = (word) => word[0].toUpperCase() + word.slice(1);
 
 /** Both players and their scores, marking whose turn it is to choose. */
