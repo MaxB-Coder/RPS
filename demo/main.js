@@ -1,4 +1,4 @@
-import { screenData } from '../src/screens.js';
+import { MADE_IN, screenData } from '../src/screens.js';
 import { choose, nextTurn, startGame } from './flow.js';
 import { screenRenderer } from './screens-runtime.js';
 
@@ -10,13 +10,15 @@ const screens = screenRenderer(
 );
 
 const app = document.getElementById('app');
-document.getElementById('copyright').textContent = `© ${new Date().getFullYear()} Max Blaschek. All Rights Reserved.`;
+document.getElementById('copyright').textContent = `© ${MADE_IN} Max Blaschek. All Rights Reserved.`;
 
 let game = null;
 let firstScreen = true;
 
 function show(next) {
     game = next;
+    // A new screen starts unlit until the mouse moves (public/pointer.js)
+    delete document.documentElement.dataset['hover'];
     // <%= %> escapes, so player names are never parsed as HTML
     const data = { ...screenData(game), state: '' };
     app.innerHTML = screens.render(data.screen, data);

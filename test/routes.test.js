@@ -25,12 +25,26 @@ describe('Routes tests:', () => {
     it('plays a whole turn without any JavaScript: both picks, then the result', async () => {
         const state = await newGame();
         const afterP1 = await testServer.post('/turnP1').type('form').send({ state, move: 'rock' }).redirects(0);
-        const next = new URL(afterP1.headers.location, 'http://localhost').searchParams.get('state');
+        const next = afterP1.text.match(/name="state" value="([^"]*)"/)[1];
         const res = await testServer.post('/turnP2').type('form').send({ state: next, move: 'scissors' });
 
         expect(res).to.have.status(200);
         // EJS escapes the apostrophes
         expect(res.text.replace(/&#39;/g, "'")).to.contain("Alice's rock beats Bob's scissors");
+    });
+
+    it("never puts player 1's pick in the address bar for player 2 to see", async () => {
+        const state = await newGame();
+        const res = await testServer.post('/turnP1').type('form').send({ state, move: 'spock' }).redirects(0);
+
+        expect(res).to.have.status(200);
+        expect(res.headers.location).to.equal(undefined);
+        expect(res.text).to.contain('Bob, pick your weapon');
+    });
+
+    it('says in the footer that the game dates from 2023', async () => {
+        const res = await testServer.get('/');
+        expect(res.text).to.contain('&copy; 2023 Max Blaschek');
     });
 
     it('serves only its own stylesheet, with no CDN scripts', async () => {

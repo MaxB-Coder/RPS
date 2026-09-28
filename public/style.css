@@ -284,7 +284,9 @@ input.cta:focus-visible,
   object-fit: contain;
 }
 
-.weapon:hover {
+/* Only for a mouse that has moved since the screen appeared (public/pointer.js):
+   otherwise the tile player 1 just tapped or clicked stays lit for player 2 */
+[data-hover] .weapon:hover {
   border-color: var(--accent);
   background: var(--tile-hover);
   transform: translateY(-3px);

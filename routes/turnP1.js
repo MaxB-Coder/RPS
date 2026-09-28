@@ -28,8 +28,9 @@ router.post('/', (req, res) => {
     return renderScreen(res, { screen: 'result', battle, result }, state);
   }
 
-  // Only Player 1 has moved, redirect to Player 2's turn
-  res.redirect(`/game?state=${state}`);
+  // Only one player has moved: show the other one's turn from here. A redirect
+  // would put the state, pick included, in the address bar for them to read
+  renderScreen(res, { screen: 'choose', battle, result: null }, state);
 });
 
 export default router;
