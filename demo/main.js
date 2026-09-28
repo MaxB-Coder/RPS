@@ -24,10 +24,14 @@ function form(onSubmit, ...children) {
 
 const button = (label) => el('input', { type: 'submit', className: 'mt-2 h5', value: label });
 
+let firstScreen = true;
+
 function show(...children) {
     app.replaceChildren(...children);
-    // Move focus to the new screen's heading so keyboard and screen reader users follow along
-    app.querySelector('h1, p.who')?.focus();
+    // Move focus to the new screen's heading so keyboard and screen reader users
+    // follow along; the first screen is simply where the page starts
+    if (firstScreen) firstScreen = false;
+    else app.querySelector('h1, p.who')?.focus();
 }
 
 function startScreen() {
