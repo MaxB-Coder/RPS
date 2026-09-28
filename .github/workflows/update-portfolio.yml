@@ -24,4 +24,7 @@ jobs:
             echo "::notice::PORTFOLIO_DISPATCH_TOKEN isn't set, so the portfolio will pick this up in its daily rebuild"
             exit 0
           fi
-          gh workflow run deploy.yml --repo MaxB-Coder/personal-website -f reason="${{ github.repository }}@${{ github.sha }}"
+          # The REST call needs only the token's Actions permission (`gh workflow run`
+          # also looks up the default branch, which this token isn't allowed to read)
+          gh api --method POST repos/MaxB-Coder/personal-website/actions/workflows/deploy.yml/dispatches \
+            -f ref=main -f "inputs[reason]=${{ github.repository }}@${{ github.sha }}"
