@@ -1,5 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { choose, nextTurn, startGame, WEAPONS } from './flow.js';
+import './demo.css';
+import { choose, lastTurn, nextTurn, scoreboard, startGame, WEAPONS } from './flow.js';
 
 const app = document.getElementById('app');
 document.getElementById('copyright').textContent = `© ${new Date().getFullYear()} Max Blaschek. All Rights Reserved.`;
@@ -22,7 +23,18 @@ function form(onSubmit, ...children) {
     return node;
 }
 
-const button = (label) => el('input', { type: 'submit', className: 'mt-2 h5', value: label });
+const button = (label) => el('input', { type: 'submit', className: 'cta', value: label });
+
+const weaponImage = (weapon) => el('img', { src: `images/${weapon}.png`, alt: '' });
+
+/** Both players and their scores; the one choosing is highlighted. */
+function scores(game) {
+    return el('div', { className: 'scoreboard', ariaLabel: 'Score' },
+        ...scoreboard(game).map(({ name, score, current }) =>
+            el('div', { className: current ? 'score current' : 'score' },
+                el('span', { className: 'score-name' }, name),
+                el('span', { className: 'score-points' }, String(score)))));
+}
 
 let firstScreen = true;
 
@@ -35,33 +47,30 @@ function show(...children) {
 }
 
 function startScreen() {
-    const name1 = el('input', { type: 'text', className: 'text-center mx-3 h5', placeholder: 'Player 1', ariaLabel: 'Player 1 name' });
-    const name2 = el('input', { type: 'text', className: 'text-center mx-3 h5', placeholder: 'Player 2', ariaLabel: 'Player 2 name' });
+    const name1 = el('input', { type: 'text', className: 'name', placeholder: 'Player 1', ariaLabel: 'Player 1 name', autocomplete: 'off' });
+    const name2 = el('input', { type: 'text', className: 'name', placeholder: 'Player 2', ariaLabel: 'Player 2 name', autocomplete: 'off' });
     show(
-        el('header', { className: 'p-2 d-flex justify-content-center w-100' },
-            el('img', { src: 'images/RPS.png', alt: 'Rock, Paper, Scissors, Spock, Lizard', className: 'img-fluid' })),
-        el('p', { className: 'who text-center text-white mt-3', tabIndex: -1 }, 'Who is playing?'),
+        el('header', { className: 'banner' },
+            el('img', { src: 'images/RPS.png', alt: 'Rock, Paper, Scissors, Spock, Lizard' })),
+        el('p', { className: 'who', tabIndex: -1 }, 'Who is playing?'),
         form(() => render(startGame(name1.value, name2.value)),
-            el('div', { className: 'd-flex justify-content-center mt-2 w-100' }, name1, name2),
-            el('div', { className: 'text-black' }, el('input', { type: 'submit', className: 'mt-4 h5', value: "Let's ROCK!" }))),
+            el('div', { className: 'names' }, name1, el('span', { className: 'versus', ariaHidden: 'true' }, 'vs'), name2),
+            button("Let's ROCK!")),
+        el('p', { className: 'hint' }, 'First to five wins. Take turns on this device, and no peeking.'),
     );
 }
 
 function chooseScreen(game) {
     const player = game.battle.currentPlayer();
     const weapons = WEAPONS.map((weapon) => {
-        const input = el('input', { type: 'image', className: 'weapon', src: `images/${weapon}.png`, alt: capitalise(weapon) });
-        input.addEventListener('click', (event) => {
-            event.preventDefault();
-            render(choose(game, weapon));
-        });
-        return input;
+        const tile = el('button', { type: 'button', className: 'weapon' }, weaponImage(weapon), el('span', {}, capitalise(weapon)));
+        tile.addEventListener('click', () => render(choose(game, weapon)));
+        return tile;
     });
     show(
-        el('h1', { className: 'heading text-white', tabIndex: -1 }, `Current Player: ${player.name}`),
-        el('h2', { className: 'heading text-white' }, `Your score is ${player.score}`),
-        el('p', { className: 'heading text-white' }, 'Select your weapon!'),
-        el('div', { className: 'd-flex flex-wrap justify-content-center' }, ...weapons),
+        scores(game),
+        el('h1', { className: 'heading', tabIndex: -1 }, `${player.name}, pick your weapon`),
+        el('div', { className: 'weapons' }, ...weapons),
     );
 }
 
@@ -72,11 +81,22 @@ function describeTurn(game) {
     return `Draw! Both chose ${p1.weapon}`;
 }
 
+/** The two weapons face to face, the winner's lit up. */
+function faceOff(game) {
+    const { sides, winner } = lastTurn(game);
+    const side = ({ name, weapon }, index) =>
+        el('div', { className: winner === null ? 'side' : winner === index ? 'side won' : 'side lost' },
+            weaponImage(weapon),
+            el('span', {}, name));
+    return el('div', { className: 'face-off', ariaHidden: 'true' },
+        side(sides[0], 0), el('span', { className: 'versus' }, 'vs'), side(sides[1], 1));
+}
+
 function resultScreen(game) {
-    const [p1, p2] = game.battle.players;
     show(
-        el('h1', { className: 'heading text-white text-center', tabIndex: -1 }, describeTurn(game)),
-        el('h2', { className: 'heading text-white text-center' }, `Score: ${p1.score} to ${p2.score}`),
+        scores(game),
+        faceOff(game),
+        el('h1', { className: 'heading', tabIndex: -1 }, describeTurn(game)),
         form(() => render(nextTurn(game)), button('Another one')),
     );
 }
@@ -85,12 +105,12 @@ function winnerScreen(game) {
     const [p1, p2] = game.battle.players;
     const [winner, loser] = p1.score > p2.score ? [p1, p2] : [p2, p1];
     show(
-        el('h1', { className: 'heading text-white text-center mt-4', tabIndex: -1 }, `${winner.name} is the winner!`),
-        el('div', { className: 'd-flex justify-content-center' },
-            el('div', { className: 'winbox' },
-                el('h2', { className: 'text-white text-center' }, `Sorry ${loser.name}, you'll get 'em next time...`),
-                el('h2', { className: 'text-white text-center mt-1' }, `Final battle: ${winner.name}'s ${winner.weapon} beat ${loser.name}'s ${loser.weapon}`),
-                el('h2', { className: 'text-white text-center mt-1' }, `Final score: ${p1.score} to ${p2.score}`))),
+        el('p', { className: 'trophy', ariaHidden: 'true' }, '🏆'),
+        el('h1', { className: 'heading winner', tabIndex: -1 }, `${winner.name} is the winner!`),
+        el('div', { className: 'winbox' },
+            el('p', {}, `Final score: ${winner.score} to ${loser.score}`),
+            el('p', {}, `Final battle: ${winner.name}'s ${winner.weapon} beat ${loser.name}'s ${loser.weapon}`),
+            el('p', { className: 'consolation' }, `Sorry ${loser.name}, you'll get 'em next time...`)),
         form(startScreen, button('Play again?')),
     );
 }

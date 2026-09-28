@@ -23,3 +23,15 @@ export function choose(game, weapon) {
 export function nextTurn(game) {
     return { ...game, screen: 'choose', result: null };
 }
+
+/** Both players and their scores, marking whose turn it is to choose. */
+export function scoreboard(game) {
+    const current = game.screen === 'choose' ? game.battle.currentPlayer() : null;
+    return game.battle.players.map((player) => ({ name: player.name, score: player.score, current: player === current }));
+}
+
+/** The turn just played: each side's weapon, and which side won it (null for a draw). */
+export function lastTurn(game) {
+    const winner = { 'P1 Win': 0, 'P2 Win': 1 }[game.result] ?? null;
+    return { sides: game.battle.players.map(({ name, weapon }) => ({ name, weapon })), winner };
+}
