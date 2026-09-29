@@ -1,6 +1,5 @@
 import express from "express";
 import path from "path";
-import bodyParser from "body-parser";
 import gameRouter from "./routes/game.js";
 import turnP1Router from "./routes/turnP1.js";
 import turnP2Router from "./routes/turnP2.js";
@@ -11,8 +10,8 @@ const app = express();
 app.use(express.static(path.join(path.resolve(), "public")));
 
 // Middleware
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Set view engine
 app.set("view engine", "ejs");

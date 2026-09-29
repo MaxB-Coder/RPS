@@ -1,8 +1,6 @@
-import chai from 'chai';
-import chaiHttp from 'chai-http';
+import { expect } from 'chai';
 import Player from '../src/player.js';
 
-const expect = chai.expect;
 
 describe('Player class tests:', () => { 
     let player;

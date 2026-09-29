@@ -1,12 +1,11 @@
-import chai from 'chai';
-import chaiHttp from 'chai-http';
+import { expect, use } from 'chai';
+import chaiHttp, { request } from 'chai-http';
 import app from '../app.js';
 
-const expect = chai.expect;
-chai.use(chaiHttp);
+use(chaiHttp);
 
 describe('Routes tests:', () => {
-    const testServer = chai.request(app).keepOpen();
+    const testServer = request.execute(app).keepOpen();
 
     const newGame = async () => {
         const res = await testServer.post('/game').type('form').send({ player1: 'Alice', player2: 'Bob' }).redirects(0);

@@ -1,9 +1,8 @@
-import chai from 'chai';
+import { expect } from 'chai';
 import ejs from 'ejs';
 import { choose, nextTurn, startGame } from '../demo/flow.js';
 import { screenData } from '../src/screens.js';
 
-const expect = chai.expect;
 const render = (game) =>
     ejs.renderFile('views/page.ejs', { ...screenData(game), state: 'STATE', year: 2026 });
 

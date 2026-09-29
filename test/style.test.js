@@ -1,7 +1,6 @@
-import chai from 'chai';
+import { expect } from 'chai';
 import { readFileSync } from 'node:fs';
 
-const expect = chai.expect;
 
 describe('The stylesheet:', () => {
     it("never lights a weapon just because a finger or a still mouse is over it, so player 1's pick stays hidden", () => {

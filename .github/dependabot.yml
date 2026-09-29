@@ -2,8 +2,13 @@ version: 2
 updates:
   - package-ecosystem: npm
     directory: /
+    # Monthly, in at most two PRs (small upgrades, then majors), so they don't
+    # pile up; the Tests workflow shows whether each one is safe to merge
     schedule:
-      interval: weekly
+      interval: monthly
+    open-pull-requests-limit: 3
     groups:
       minor-and-patch:
         update-types: [minor, patch]
+      major:
+        update-types: [major]

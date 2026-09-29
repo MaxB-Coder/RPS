@@ -1,7 +1,6 @@
-import chai from 'chai';
+import { expect } from 'chai';
 import { choose, lastTurn, nextTurn, scoreboard, startGame, WEAPONS } from '../demo/flow.js';
 
-const expect = chai.expect;
 
 describe('Static game flow:', () => {
     it('starts with player 1 choosing, and names blank players', () => {
