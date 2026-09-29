@@ -1,3 +1,6 @@
 node_modules
 # Static demo build (npm run build:demo)
 dist-demo/
+
+# Test coverage output (npm run c8-coverage)
+coverage/
