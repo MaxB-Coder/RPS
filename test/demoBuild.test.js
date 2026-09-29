@@ -1,4 +1,4 @@
-import chai from 'chai';
+import { expect } from 'chai';
 import ejs from 'ejs';
 import { mkdtempSync, readdirSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -8,7 +8,6 @@ import { choose, nextTurn, startGame } from '../demo/flow.js';
 import { precompiledScreens } from '../demo/precompile.js';
 import { screenData } from '../src/screens.js';
 
-const expect = chai.expect;
 
 /** A game at each screen. */
 function games() {

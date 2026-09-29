@@ -1,8 +1,6 @@
-import chai from 'chai';
-import chaiHttp from 'chai-http';
+import { expect } from 'chai';
 import Battle from '../src/battle.js';
 
-const expect = chai.expect;
 describe('Battle class tests:', () => { 
     let battle;
 
