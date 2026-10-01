@@ -18,12 +18,12 @@
   "author": "dearshrewdwit",
   "license": "ISC",
   "dependencies": {
-    "ejs": "^3.1.9",
+    "ejs": "^6.0.1",
     "express": "^5.2.1"
   },
   "devDependencies": {
     "c8": "^12.0.0",
-    "chai": "^5.3.3",
+    "chai": "^6.3.0",
     "chai-http": "^5.1.2",
     "mocha": "^12.0.2",
     "nodemon": "^3.1.14",

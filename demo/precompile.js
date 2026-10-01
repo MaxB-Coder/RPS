@@ -9,8 +9,21 @@ import { screenRenderer } from './screens-runtime.js';
 /** Every variable the screens use (see src/screens.js); strict mode needs them named. */
 const LOCALS = ['screen', 'scores', 'player', 'action', 'weapons', 'state', 'turn', 'heading', 'winner', 'loser'];
 
-const compileScreen = (template, filename) =>
-    ejs.compile(template, { client: true, strict: true, destructuredLocals: LOCALS, filename }).toString();
+/**
+ * A screen's render function as source code: (locals, escapeFn, include) => html.
+ * EJS 6 has no "client" option any more, so this wraps the function body its
+ * compiler builds. Strict mode, no `with`, and no debug wrapper.
+ */
+function compileScreen(template, filename) {
+    const compiled = new ejs.Template(template, {
+        strict: true,
+        destructuredLocals: LOCALS,
+        compileDebug: false,
+        filename,
+    });
+    compiled.compile();
+    return `function (locals, escapeFn, include) {\n"use strict";\n${compiled.source}}`;
+}
 
 /** Vite plugin: importing a .ejs file gives its compiled render function. */
 export function ejsScreens() {
