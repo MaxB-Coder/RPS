@@ -18,7 +18,7 @@
   "author": "dearshrewdwit",
   "license": "ISC",
   "dependencies": {
-    "ejs": "^6.0.1",
+    "ejs": "^7.0.2",
     "express": "^5.2.1"
   },
   "devDependencies": {
